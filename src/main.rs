@@ -101,4 +101,44 @@ fn main() {
         // _ => println!("") // print an empty string in all other cases
         x => println!("You are {x} years old!")
     }
+
+    let username = get_username(1);
+    // match username {
+    //     Some(name) => println!(" > {name}"),
+    //     None => {}
+    // }
+    if let Some(name) = username {
+        println!(" > {name}");
+    }
+
+    let username_2 = get_username_alt(1);
+    if let Some(name_2) = username_2 {
+        println!(" > username: {}", name_2);
+    }
+}
+
+fn get_username(user_id: u32) -> Option<String> {
+    let db_result = String::from("Ferris");
+    if user_id == 1 {
+        Some(db_result)
+    }
+    else {
+        None
+    }
+}
+
+fn get_username_alt(user_id: u32) -> Option<String> {
+    let query = format!(
+        "GET username FROM users WHERE id={user_id}"
+    );
+    let db_result = query_db(query);
+    db_result.ok()
+}
+
+fn query_db(query: String) -> Result<String, String> {
+    if query.is_empty() {
+        Err(String::from("Query string is empty!"))
+    } else {
+        Ok(String::from("Ferris"))
+    }
 }
